@@ -1,0 +1,17 @@
+
+
+.img-footer{
+ width: 35%;
+ max-width: 1000px
+}
+
+
+.footer-bottom-home {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #6C2CF5;
+}
+
+.footer-bottom-home p {
+  color: #6C2CF5;
+}
