@@ -12,7 +12,7 @@ export default function Sidebar({sidebar}) {
         <li className='li-sidebar'><PiRanking />Rankings</li>
 
 
-      </div> ERRORS PRESENTADOS
+      </div> FALTA TOGLEAR ABAJO QUEDO COMPLETO EL DASH FUNCIONAL
     </>
   )
 }*/

@@ -14,15 +14,22 @@ export default class RoomManager {
 
   private generateCode(): RoomCode {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-    return Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('')
+    return Array.from({ length: 4 }, () =>
+      chars[Math.floor(Math.random() * chars.length)]
+    ).join('')
   }
 
   private emitRoomState(code: RoomCode) {
     const room = this.rooms.get(code)
     if (!room) return
-    const players = Array.from(room.players.values()).map((p) => ({ nickname: p.nickname, score: p.score }))
+    const players = Array.from(room.players.values()).map((p) => ({
+      nickname: p.nickname,
+      score: p.score,
+    }))
     this.io.to(code).emit('room:state', { code, status: room.status, players })
-    this.io.to(code).emit('scoreboard', { code, table: [...players].sort((a, b) => b.score - a.score) })
+    this.io
+      .to(code)
+      .emit('scoreboard', { code, table: [...players].sort((a, b) => b.score - a.score) })
   }
 
   bindSocket(socket: Socket) {
@@ -70,16 +77,17 @@ export default class RoomManager {
       }
     )
 
-    // Lanzar la pregunta a los juagadores
+    // Lanzar pregunta a jugadores
     socket.on(
       'moderator:start_question',
       (
         {
           code,
           text,
+          answers,
           correctAnswer,
           durationSec,
-        }: { code: string; text: string; correctAnswer: string; durationSec: number },
+        }: { code: string; text: string; answers: string[]; correctAnswer: string; durationSec: number },
         ack?: Function
       ) => {
         const room = this.rooms.get(code)
@@ -92,7 +100,7 @@ export default class RoomManager {
         const endsAt = Date.now() + Math.max(5, durationSec || 20) * 1000
         room.currentRound = {
           id: randomUUID(),
-          question: { id: randomUUID(), text, correctAnswer },
+          question: { id: randomUUID(), text, correctAnswer, options: answers },
           endsAt,
           isOpen: true,
           answers: new Map(),
@@ -108,15 +116,16 @@ export default class RoomManager {
 
         this.io.to(code).emit('question:started', {
           code,
-          questionId: room.currentRound.id,
+          questionId: room.currentRound!.id,
           text,
+          answers,
           endsAt,
         })
-        ack?.({ ok: true })
+        ack?.({ ok: true, code })
       }
     )
 
-    // Responder preguntas jugador
+    // Responder pregunta
     socket.on(
       'player:answer',
       ({ code, answer }: { code: string; answer: string }, ack?: Function) => {
@@ -128,22 +137,19 @@ export default class RoomManager {
 
         player.answered = true
         const timeMs = Math.max(0, room.currentRound.endsAt - Date.now())
-        const isCorrect =
-          String(answer).trim().toLowerCase() ===
-          room.currentRound.question.correctAnswer.trim().toLowerCase()
 
         room.currentRound.answers.set(player.id, {
           playerId: player.id,
           answer,
           timeMs,
-          isCorrect,
+          isCorrect: answer.trim().toLowerCase() === room.currentRound.question.correctAnswer.trim().toLowerCase(),
         })
 
         ack?.({ ok: true })
       }
     )
 
-    // Cerrar ronda por moderador
+    // Cerrar ronda
     socket.on('moderator:close_round', ({ code }: { code: string }, ack?: Function) => {
       const room = this.rooms.get(code)
       if (!room) return ack?.({ error: 'Sala no existe' })
@@ -152,7 +158,7 @@ export default class RoomManager {
       ack?.({ ok: true })
     })
 
-    // Finalizar el juego
+    // Finalizar juego
     socket.on('moderator:end_game', ({ code }: { code: string }, ack?: Function) => {
       const room = this.rooms.get(code)
       if (!room) return ack?.({ error: 'Sala no existe' })
@@ -163,7 +169,7 @@ export default class RoomManager {
       ack?.({ ok: true })
     })
 
-    // Desconexion de algun jugador
+    // Desconexión
     socket.on('disconnect', () => {
       for (const [code, room] of this.rooms) {
         if (room.players.has(socket.id)) {
@@ -188,21 +194,17 @@ export default class RoomManager {
 
     room.players.forEach((player) => {
       const ans = room.currentRound!.answers.get(player.id)
-      if (!ans) {
-        perPlayer.push({ nickname: player.nickname, isCorrect: false, timeMs: 0, delta: 0 })
-        return
-      }
       let delta = 0
-      if (ans.isCorrect) {
-        const base = 100
-        const bonus = Math.floor(ans.timeMs / 200) // 1 punto cada 200ms restantes
+      if (ans?.isCorrect) {
+        const base = 1
+        const bonus = Math.min(1, Math.floor(ans.timeMs / 200))
         delta = base + bonus
         player.score += delta
       }
       perPlayer.push({
         nickname: player.nickname,
-        isCorrect: ans.isCorrect,
-        timeMs: ans.timeMs,
+        isCorrect: ans?.isCorrect ?? false,
+        timeMs: ans?.timeMs ?? 0,
         delta,
       })
     })

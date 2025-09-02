@@ -12,6 +12,7 @@ export interface Question {
   id: string
   text: string
   correctAnswer: string
+  options: string[] //Agregue aqui las ocpiones de respuesta
 }
 
 export interface PlayerAnswer {

@@ -1,47 +1,51 @@
-
-
-.tool-bar{
-    background-color: #4FC4CF;
+.tool-bar {
+    background-color: teal;
     color: #FFF;
     display: flex;
-    gap: 1rem;
+    justify-content: space-between; /* separa elementos a los extremos */
     align-items: center;
-    padding: 1rem;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-.sidebar{
-    position: absolute;
-    background-color: #4FC4CF;
-    color: #fff;
+.sidebar {
+    position: fixed; /* mejor que absolute para que siempre se mantenga fija */
     top: 0;
     left: 0;
     height: 100vh;
-    width: 280px;
+    width: 260px; /* un poco más angosta */
+    background-color: teal;
+    color: #fff;
     transform: translateX(-100%);
-    transition: all 0.4s;
+    transition: transform 0.4s ease-in-out; /* más fluida */
+    z-index: 1000;
+    overflow-y: auto; /* scroll si hay muchos items */
 }
 
-.sidebar .li-sidebar{
+.sidebar .li-sidebar {
     list-style: none;
-    padding: 1rem 2rem;
-    border-bottom: solid rgba(255, 255, 255, 0.1) 1px;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     display: flex;
     align-items: center;
     gap: 1rem;
-    font-weight: 300;
+    font-weight: 400;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
 }
 
-.sidebar .li-sidebar:hover{
+.sidebar .li-sidebar:hover {
     background-color: #fff;
-    color: #000;
+    color: teal;
     cursor: pointer;
+    padding-left: 2rem; /* pequeño desplazamiento al hover */
 }
 
-.sidebar--open{
-    transform: translateX(0%);
+.sidebar--open {
+    transform: translateX(0);
 }
 
-.backdrop{
+.backdrop {
     position: fixed;
     top: 0;
     left: 0;
@@ -49,8 +53,25 @@
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
     display: none;
+    z-index: 999; /* justo debajo del sidebar */
 }
 
-.backdrop--open{
+.backdrop--open {
     display: block;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 220px;
+    }
+
+    .tool-bar {
+        padding: 0.8rem 1rem;
+    }
+
+    .sidebar .li-sidebar {
+        font-size: 0.9rem;
+        padding: 0.8rem 1rem;
+    }
 }

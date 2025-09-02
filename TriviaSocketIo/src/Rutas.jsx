@@ -8,6 +8,7 @@ import Rankings from "./pages/Rankings/Rankings"
 import NombreModerador from "./pages/NameModerador/NombreModerador"
 import CreateSala from "./pages/CrearSala/CreateSala"
 import CreateRoom from "./pages/CreateRoom/CreateRoom"
+import PlayerView from "./pages/ResponderPreguntasJugador/PlayerView"
 
 export default function Rutas() {
   return (
@@ -23,6 +24,7 @@ export default function Rutas() {
                 {/*Rutas del moderador  y jugador*/}
                 <Route path="/panelmoderador" element={<PanelModerador />} />
                 <Route path="/unirsesala" element={<JoinRoom />}/>
+                <Route path="/preguntasjuego" element={<PlayerView />}/>
 
                 {/*Rutas del juego */}
                 <Route path="/namemoderador" element={<NombreModerador />} />

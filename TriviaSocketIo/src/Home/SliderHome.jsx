@@ -3,9 +3,9 @@ import "./styles/StylesSlider.css";
 import { useNavigate } from 'react-router-dom';
 import { CgArrowLongLeft,CgArrowLongRight } from "react-icons/cg";
 
-import img1 from './img/triviaroriginal2.jpg'
-import img2 from './img/triviaoriginal3.jpg'
-import img3 from './img/triviaoriginal4.jpg'
+import img1 from './img/fonodtriviadash.webp'
+import img2 from './img/triviass2.jpg'
+import img3 from './img/fonodtrivihome.webp'
 
 export default function SliderHome() {
   const navegar = useNavigate();
@@ -50,8 +50,8 @@ export default function SliderHome() {
             ¿Que Esperas para Jugar?<span className="highlight-home">Diviértete</span> Jugando TriviaQuest
           </h1>
           <div className="hero-actions-home">
-            <button className="bg-purple-500 text-white rounded-full w-35 h-15 cursor-pointer m-1  hover:bg-white hover:text-purple-500 " onClick={() => navegar('/namemoderador')}>Sala</button>
-            <button className="bg-purple-500 text-white rounded-full w-35 h-15 cursor-pointer  hover:bg-white hover:text-purple-500" onClick={() => navegar('/unirsesala')}>Unirse a la Sala</button>
+            <button className="bg-teal-700 text-white rounded-full w-35 h-15 cursor-pointer m-1  hover:bg-white hover:text-teal-500 " onClick={() => navegar('/namemoderador')}>Sala</button>
+            <button className="bg-teal-700 text-white rounded-full w-35 h-15 cursor-pointer  hover:bg-white hover:text-teal-500" onClick={() => navegar('/unirsesala')}>Unirse a la Sala</button>
           </div>
         </div>
       </div>

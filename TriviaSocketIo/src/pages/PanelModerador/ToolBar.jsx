@@ -9,7 +9,7 @@ export default function ToolBar({openSidebar}) {
   return (
     <>
       <div className="tool-bar">
-        <div className="burger" onClick={openSidebar}>
+        <div className="burger hover:cursor-pointer" onClick={openSidebar}>
             <IoMenuSharp />
         </div>
         <div className="title">Moderador : {moderador}</div>

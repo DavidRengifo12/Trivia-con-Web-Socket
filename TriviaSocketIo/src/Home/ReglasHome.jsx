@@ -25,9 +25,7 @@ export default function ReglasHome() {
             
             <div className="about-features-home">
               <div className="feature-item-home">
-                <div className="feature-icon-home">
-                  <i className="icon-check-home"></i>
-                </div>
+                
                 <div className="feature-text-home">
                   <h4 className='h3-home'><strong>Caracteristicas del Juego</strong></h4>
                   <p className='p-home'><strong>Variedad de Categorías:</strong> Preguntas de diferentes temas: cultura general, ciencia, arte, tecnología y mucho más.</p>

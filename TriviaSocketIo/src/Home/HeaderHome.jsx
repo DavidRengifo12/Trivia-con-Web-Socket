@@ -15,7 +15,7 @@ export default function HeaderHome() {
     
         <header className="site-header-home">
         
-            <div className="container-home">
+            <div className="container-home ">
                 <div className="header-wrapper-home">
                         {/*<img src={imagenlogo} alt="" width={200} height={200}  className="imagen-logo"/>*/}
                         <p className="nav-menu-home">TRIVIAQUEST</p>

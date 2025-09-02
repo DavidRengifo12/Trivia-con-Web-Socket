@@ -10,8 +10,11 @@
   text-align: center;
   padding-top: 20px;
   border-top: 1px solid #6C2CF5;
+  color: white;
+  background-color: teal;
 }
 
 .footer-bottom-home p {
-  color: #6C2CF5;
+  color: white;
+
 }
